@@ -1,0 +1,2 @@
+# mahalanobis_transformer
+ユークリッド距離を計算したらマハラノビス距離になるように変換する
