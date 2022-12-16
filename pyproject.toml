@@ -3,6 +3,12 @@ name = "mahalanobis_transformer"
 version = "0.1.1"
 description = "The transformer that transforms data so to squared norm of transformed data becomes Mahalanobis' distance"
 authors = ["Tetsutaro Maruyama <tetsutaro.maruyama@gmail.com>"]
+maintainers = ["Tetsutaro Maruyama <tetsutaro.maruyama@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/tetutaro/mahalanobis_transformer"
+repository = "https://github.com/tetutaro/mahalanobis_transformer"
+keywords = ["mahalanobis-distance", "scikit-learn-api"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
