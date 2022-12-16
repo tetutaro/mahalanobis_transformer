@@ -8,14 +8,46 @@ from sklearn.preprocessing import StandardScaler
 
 class MahalanobisTransformer(TransformerMixin, BaseEstimator):
     '''Constructs a transformer that transforms data
-    so to the squared norm of the transformed data
+    so to squared norm of transformed data
     becomes Mahalanobis' distance.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from mahalanobis_transformer import MahalanobisTransformer
+    >>> m = np.array([1, 2])
+    >>> K = np.array([[2, 1], [1, 2]])
+    >>> np.random.seed(seed=12)
+    >>> X = np.random.multivariate_normal(mean=m, cov=K, size=3)
+    >>> X
+    array([[ 0.903,  0.939]
+           [ 1.906,  0.500]
+           [ 1.163, -0.008]])
+    >>> transformer = MahalamobisTransformer().fit(X)
+    >>> Z = transformer.transform(X)
+    >>> Z
+    array([[-0.619,  0.975]
+           [ 1.154,  0.049]
+           [-0.534, -1.024]])
+    >>> transformer.inverse_transform(Z)
+    array([[ 0.903,  0.939]
+           [ 1.906,  0.500]
+           [ 1.163, -0.008]])
+    >>> from sklearn.preprocessing import StandardScaler
+    >>> from scipy.spatial.distance import cdist
+    >>> ss = StandardScaler().fit(X)
+    >>> X_normed = ss.transform(X)
+    >>> vi = np.linalg.inv(np.cov(X_normed, rowvar=False))
+    >>> cdist(X_normed, np.zeros((1, 2)), metric='mahalanobis', VI=vi).ravel()
+    array([1.155, 1.155, 1.155])
+    >>> cdist(Z, metric='euclidean').ravel()
+    array([1.155, 1.155, 1.155])
     '''
     def __init__(
         self: MahalanobisTransformer,
         validate: bool = False
     ) -> None:
-        self.ss = StandardScaler()
+        self.ss = None
         self.mah = None
         return
 
@@ -23,7 +55,7 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         return self._validate_data(
             X=X,
             y='no_validation',
-            accept_sparce=False,
+            accept_sparse=False,
             reset=reset
         )
 
@@ -48,7 +80,17 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
             MahalanobisTransformer class instance.
         '''
         X = self._check_input(X, reset=True)
-        normed = self.ss.fit_transform(X)
+        n_feature = X.shape[1]
+        self.ss = StandardScaler().fit(X)
+        normed = self.ss.transform(X)
+        np.testing.assert_almost_equal(
+            normed.mean(axis=0),
+            np.zeros(n_feature)
+        )
+        np.testing.assert_almost_equal(
+            normed.var(axis=0),
+            np.ones(n_feature)
+        )
         self.mah = np.linalg.cholesky(
             np.linalg.inv(
                 np.cov(normed, rowvar=False)
@@ -114,5 +156,5 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         X_out : array-like, shape (n_samples, n_features)
         '''
         X = self._check_input(X, reset=False)
-        r = np.dot(np.linalg.inv(self.mah), X)
+        r = np.dot(X, np.linalg.inv(self.mah))
         return self.ss.inverse_transform(r)

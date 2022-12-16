@@ -12,8 +12,12 @@ install_requires = [
 
 setup_kwargs = {
     'name': 'mahalanobis-transformer',
-    'version': '0.1.0',
-    'description': '',
+    'version': '0.1.1',
+    'description': (
+        "The transformer that transforms data "
+        "so to squared norm of transformed data "
+        "becomes Mahalanobis' distance"
+    ),
     'long_description': None,
     'author': 'Tetsutaro Maruyama',
     'author_email': 'tetsutaro.maruyama@gmail.com',
