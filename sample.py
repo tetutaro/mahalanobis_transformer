@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import numpy as np
-from sklearn.preprocessing import StandardScaler
 from scipy.spatial.distance import cdist, euclidean, mahalanobis
 from mahalanobis_transformer import MahalanobisTransformer
 
@@ -52,20 +51,18 @@ print(
     ).ravel()
 )
 # Check Mahalanobis Distance of X
-ss = StandardScaler().fit(X)
-X_normed = ss.transform(X)
-vi = np.linalg.inv(np.cov(X_normed, rowvar=False))
+vi = np.linalg.inv(np.cov(X, rowvar=False))
 print("=== Mahalanobis Distance of X (scipy...mahalanobis) ===")
 print(
     np.array([
-        mahalanobis(x, np.zeros(n_feature), VI=vi) for x in X_normed
+        mahalanobis(x, X.mean(axis=0), VI=vi) for x in X
     ])
 )
 print("=== Mahalanobis Distance of X (scipy...cdist) ===")
 print(
     cdist(
-        X_normed,
-        np.zeros((1, n_feature)),
+        X,
+        X.mean(axis=0).reshape((1, n_feature)),
         metric='mahalanobis',
         VI=vi
     ).ravel()
@@ -83,5 +80,5 @@ print(
 )
 print("=== Euclidean Distance of Z (scipy...cdist) ===")
 print(
-    cdist(Z, np.zeros((1, X.shape[1])), metric='euclidean').ravel()
+    cdist(Z, np.zeros((1, n_feature)), metric='euclidean').ravel()
 )

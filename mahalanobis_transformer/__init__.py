@@ -45,7 +45,6 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
     '''
     def __init__(
         self: MahalanobisTransformer,
-        validate: bool = False
     ) -> None:
         self.ss = None
         self.mah = None
@@ -99,19 +98,19 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         return self
 
     def __sklearn_is_fitted__(self: MahalanobisTransformer) -> bool:
-        '''Check the instance of transformer is fitted
+        '''Check the instance of transformer has already fitted.
 
         Returns
         -------
         is_fitted : bool
-            if the instance has already fitted, returns True
+            if the instance has already fitted, returns True.
         '''
         if self.mah is None:
             return False
         return True
 
     def transform(self: MahalanobisTransformer, X):
-        '''Transform X to Mahalanobis Space
+        '''Mahalanobis transform X.
 
         Parameters
         ----------
@@ -128,7 +127,7 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         return np.dot(normed, self.mah)
 
     def fit_transform(self: MahalanobisTransformer, X):
-        '''fit and transform
+        '''Fit to data, then transform it.
 
         Parameters
         ----------
@@ -144,7 +143,7 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         return self.transform(X)
 
     def inverse_transform(self: MahalanobisTransformer, X):
-        '''Transform X to Euclid Space
+        '''Inverse Mahalanobis transform X.
 
         Parameters
         ----------
@@ -154,7 +153,8 @@ class MahalanobisTransformer(TransformerMixin, BaseEstimator):
         Returns
         -------
         X_out : array-like, shape (n_samples, n_features)
+            Inverse transformed input.
         '''
         X = self._check_input(X, reset=False)
-        r = np.dot(X, np.linalg.inv(self.mah))
-        return self.ss.inverse_transform(r)
+        X_out = np.dot(X, np.linalg.inv(self.mah))
+        return self.ss.inverse_transform(X_out)

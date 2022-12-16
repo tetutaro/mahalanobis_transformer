@@ -8,6 +8,6 @@ def test() -> None:
     '''
     subprocess.run([
         'python', '-u', '-m',
-        'pytest', '-v', '--cov', '--flake8'
+        'pytest', '-v', '--cov'
     ])
     return

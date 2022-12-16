@@ -32,13 +32,12 @@ uninstall:
 
 .PHONY: test
 test:
-#   python3 -u -m pytest -v --cov --flake8
+#	python3 -u -m pytest -v --cov --cov-report=html
 	poetry run test
 
 .PHONY: doc
 doc:
 	cd docs && make html
-	cd test_docs && make html
 
 .PHONY: exclude-export
 exclude-export:

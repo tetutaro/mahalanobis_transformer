@@ -10,9 +10,11 @@ install_requires = [
     'scikit-learn>=1.2.0,<2.0.0',
 ]
 
+entry_points = {'console_scripts': ['test = scripts:test']}
+
 setup_kwargs = {
     'name': 'mahalanobis-transformer',
-    'version': '0.1.1',
+    'version': '0.1.2',
     'description': (
         "The transformer that transforms data "
         "so to squared norm of transformed data "
@@ -27,6 +29,7 @@ setup_kwargs = {
     'packages': packages,
     'package_data': package_data,
     'install_requires': install_requires,
+    'entry_points': entry_points,
     'python_requires': '>=3.9,<4.0',
 }
 
