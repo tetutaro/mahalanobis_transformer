@@ -12,7 +12,7 @@ The transformer that transforms data so to squared norm of transformed data beco
 * しかし一般的なデータの場合、特徴量間には少なからず相関があることがほとんどである
 * 特徴量間に相関がある場合の距離として、[マハラノビス距離](https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%8F%E3%83%A9%E3%83%8E%E3%83%93%E3%82%B9%E8%B7%9D%E9%9B%A2) が良く使われる
 	* $D_{M}(X)=\sqrt{(X-\mu)S^{-1}(X-\mu)^{T}}$
-        * 上記の $X$ は pandas, scikit-learn における DataFrame を想定し (n\_sample, n\_feature) 行列を考えているので、Wikipedia の表記とは行と列が逆（転地している）
+        * 上記の $X$ は pandas, scikit-learn における DataFrame を想定し (n\_sample, n\_feature) 行列を考えているので、Wikipedia の表記とは行と列が逆（転置している）
         * $S$ はデータの [共分散行列](https://ja.wikipedia.org/wiki/%E5%88%86%E6%95%A3%E5%85%B1%E5%88%86%E6%95%A3%E8%A1%8C%E5%88%97) （ $(X-\mu)^{T}(X-\mu)$ である (n\_feature, n\_feature) 行列（Wikipedia の表記とは行と列が逆））
         * この場合の原点は、各特徴量毎の平均ベクトル $\mu$
         * 行列からベクトルを引き算しちゃっているけど、numpy でも暗黙的に計算してくれるし、良い感じに脳内補間してください
@@ -44,11 +44,11 @@ The transformer that transforms data so to squared norm of transformed data beco
     * 対称行列の逆行列は対称行列である
         * $A$ を対称行列とする（ $A^{T}=A$ ）
         * 逆行列の定義より $AA^{-1}=I$
-        * 両辺の転地を取る $(A^{-1})^{T}A^{T}=I^{T}$
+        * 両辺の転置を取る $(A^{-1})^{T}A^{T}=I^{T}$
         * 対称行列なので $(A^{-1})^{T}A=I$
         * $A$ を右辺にもっていくと $(A^{-1})^{T}=A^{-1}$
         * $A^{-1}$ は対称行列である
-    * よって $S^{-1}=LL^{T}$ のように、コレスキー分解の共役転置は単なる転地になる
+    * よって $S^{-1}=LL^{T}$ のように、コレスキー分解の共役転置は単なる転置になる
 	* $L$ は下三角行列とする
 * $D_{M}(X)^2=XLL^{T}X^{T}=(XL)(XL)^{T}$
 * よって $XL$ を２乗する（内積を取る）とそれがマハラノビス距離の２乗になる
