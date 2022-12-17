@@ -108,3 +108,7 @@ array([1.155, 1.155, 1.155])
 | fit_transform(X[, y]) | Fit to data, then transform it. |
 | inverse_transform(X) | Inverse Mahalanobis transform X. |
 | transform(X) | Mahalanobis transform X. |
+
+## 考察
+
+[study.ipynb](study.ipynb)
